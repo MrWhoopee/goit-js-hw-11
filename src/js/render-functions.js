@@ -24,6 +24,8 @@ function destroyLightbox() {
 }
 
 export function createGallery(container, images) {
+  if (!Array.isArray(images)) return;
+
   const markup = images
     .map(
       ({
@@ -34,8 +36,8 @@ export function createGallery(container, images) {
         views,
         comments,
         downloads,
-      }) =>
-        `<li class="gallery-item">
+      }) => `
+        <li class="gallery-item">
           <a href="${largeImageURL}">
             <img src="${webformatURL}" alt="${tags}" loading="lazy" />
           </a>
@@ -45,7 +47,8 @@ export function createGallery(container, images) {
             <p><b>Comments:</b> ${comments}</p>
             <p><b>Downloads:</b> ${downloads}</p>
           </div>
-        </li>`
+        </li>
+      `
     )
     .join('');
 
@@ -62,6 +65,7 @@ export function clearGallery(container) {
 export function showLoader(loader) {
   loader.classList.remove('visually-hidden');
 }
+
 export function hideLoader(loader) {
   loader.classList.add('visually-hidden');
 }

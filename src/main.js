@@ -7,8 +7,9 @@ const refs = {
   loaderEl: document.querySelector('.loader'),
 };
 
-const searchFormFunction = async e => {
+async function searchFormFunction(e) {
   e.preventDefault();
+
   const query = e.target.elements['search-text'].value.trim();
   if (!query) return;
 
@@ -16,18 +17,16 @@ const searchFormFunction = async e => {
   render.showLoader(refs.loaderEl);
 
   try {
-    const images = await pixabay.getImagesByQuery(query);
+    const { hits } = await pixabay.getImagesByQuery(query);
 
-    if (!images || images.length === 0) {
-      return;
-    }
+    if (!hits || hits.length === 0) return;
 
-    render.createGallery(refs.galleryContainer, images);
-  } catch (error) {
-    // Помилка вже оброблена в pixabay-api.js через iziToast
+    render.createGallery(refs.galleryContainer, hits);
+  } catch (err) {
+    // iziToast показує помилку, якщо потрібно
   } finally {
     render.hideLoader(refs.loaderEl);
   }
-};
+}
 
 refs.searchFormEl.addEventListener('submit', searchFormFunction);
