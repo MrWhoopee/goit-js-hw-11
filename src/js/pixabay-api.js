@@ -6,7 +6,7 @@ import errorUrl from '../img/error.svg';
 const API_KEY = '53315678-7a3c0068dfc1cc7897b28f029';
 const BASE_URL = 'https://pixabay.com/api/';
 
-function getIziToastErrorOptions(message) {
+export function getIziToastErrorOptions(message) {
   return {
     message,
     position: 'topRight',

@@ -1,3 +1,28 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
+let lightbox = null;
+
+function initLightbox() {
+  if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery-item a', {
+      captions: true,
+      captionsData: 'alt',
+      captionPosition: 'bottom',
+      captionDelay: 250,
+    });
+  } else {
+    lightbox.refresh();
+  }
+}
+
+function destroyLightbox() {
+  if (lightbox) {
+    lightbox.destroy();
+    lightbox = null;
+  }
+}
+
 export function createGallery(container, images) {
   const markup = images
     .map(
@@ -25,8 +50,12 @@ export function createGallery(container, images) {
     .join('');
 
   container.insertAdjacentHTML('beforeend', markup);
+
+  initLightbox();
 }
+
 export function clearGallery(container) {
+  destroyLightbox();
   container.innerHTML = '';
 }
 

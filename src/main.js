@@ -1,6 +1,3 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
-
 import * as pixabay from './js/pixabay-api.js';
 import * as render from './js/render-functions.js';
 
@@ -9,13 +6,6 @@ const refs = {
   galleryContainer: document.querySelector('.gallery'),
   loaderEl: document.querySelector('.loader'),
 };
-
-let lightbox = new SimpleLightbox('.gallery-item a', {
-  captions: true,
-  captionsData: 'alt',
-  captionPosition: 'bottom',
-  captionDelay: 250,
-});
 
 const searchFormFunction = async e => {
   e.preventDefault();
@@ -28,14 +18,13 @@ const searchFormFunction = async e => {
   try {
     const images = await pixabay.getImagesByQuery(query);
 
-    if (!images) {
+    if (!images || images.length === 0) {
       return;
     }
 
     render.createGallery(refs.galleryContainer, images);
-    lightbox.refresh();
   } catch (error) {
-    console.error('Error fetching images:', error);
+    // Помилка вже оброблена в pixabay-api.js через iziToast
   } finally {
     render.hideLoader(refs.loaderEl);
   }
